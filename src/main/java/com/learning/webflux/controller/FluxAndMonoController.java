@@ -4,6 +4,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.stream.Stream;
@@ -49,5 +50,13 @@ public class FluxAndMonoController {
     public Flux<Integer> getFluxInfiniteStreamNew() {
         return Flux.fromStream(Stream.iterate(1, n -> n + 1))
                 .delayElements(Duration.ofSeconds(1));
+    }
+
+    @GetMapping(value = "/getMono")
+    public Mono<Integer> getMono(){
+//        Returning a Mono here
+        return Mono.just(1)
+                .log();
+
     }
 }

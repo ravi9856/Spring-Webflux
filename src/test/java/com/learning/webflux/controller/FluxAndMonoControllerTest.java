@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.Arrays;
@@ -27,7 +28,7 @@ public class FluxAndMonoControllerTest {
                 .get()
                 .uri("/getFlux")
                 .accept(MediaType.APPLICATION_JSON)
-                .exchange()
+                .exchange() // This will actually connect to the endpoint
                 .expectStatus().isOk()
                 .returnResult(Integer.class)
                 .getResponseBody();
@@ -104,6 +105,24 @@ public class FluxAndMonoControllerTest {
                 .expectNext(2L)
                 .thenCancel() // Cancel after these values
                 .verify();
+
+    }
+
+    @Test
+    public void monoTest(){
+
+        Integer expected = 1;
+
+        webTestClient
+                .get()
+                .uri("/getMono")
+                .accept(MediaType.APPLICATION_JSON)
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(Integer.class)
+                .consumeWith((response) -> {
+                   assertEquals(expected, response.getResponseBody());
+                });
 
     }
 }
