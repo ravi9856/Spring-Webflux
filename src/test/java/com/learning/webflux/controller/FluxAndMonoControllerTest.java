@@ -16,6 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @WebFluxTest // Scans all classes with @RestController tag
+        // Also, it takes care of creating @Bean for WebTestClient
 public class FluxAndMonoControllerTest {
 
     @Autowired
